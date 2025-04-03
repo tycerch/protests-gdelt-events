@@ -22,6 +22,7 @@ def load_data():
 
 
 df = load_data()
+print(df.columns)
 
 # Show a multiselect widget with the genres using `st.multiselect`.
 categories = st.multiselect(
@@ -42,6 +43,9 @@ df_reshaped = df_filtered.pivot_table(
 )
 df_reshaped = df_reshaped.sort_values(by="Year", ascending=False)
 
+# Display map of protests
+st.subheader("Protest Event Locations")
+st.map(df_filtered, latitude="ActionGeo_Lat", longitude="ActionGeo_Long")
 
 # Display the data as a table using `st.dataframe`.
 st.dataframe(
