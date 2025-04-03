@@ -1,15 +1,14 @@
 import altair as alt
 import pandas as pd
 import streamlit as st
+import numpy as np
 
 # Show the page title and description.
-st.set_page_config(page_title="Movies dataset", page_icon="🎬")
-st.title("🎬 Movies dataset")
+st.set_page_config(page_title="USA Protest Events Explorer", page_icon="📢")
+st.title("📢 Protest Events Explorer (USA)")
 st.write(
     """
-    This app visualizes data from [The Movie Database (TMDB)](https://www.kaggle.com/datasets/tmdb/tmdb-movie-metadata).
-    It shows which movie genre performed best at the box office over the years. Just 
-    click on the widgets below to explore!
+    This app explores the Protest GDELT Events dataset from Bigquery, filtered for USA.  CAMEO event code 14 with average event tone of < -5.
     """
 )
 
@@ -18,48 +17,50 @@ st.write(
 # reruns (e.g. if the user interacts with the widgets).
 @st.cache_data
 def load_data():
-    df = pd.read_csv("data/movies_genres_summary.csv")
+    df = pd.read_csv("data/protest_events_gdelt_bq.csv")
     return df
 
 
 df = load_data()
 
 # Show a multiselect widget with the genres using `st.multiselect`.
-genres = st.multiselect(
-    "Genres",
-    df.genre.unique(),
-    ["Action", "Adventure", "Biography", "Comedy", "Drama", "Horror"],
+categories = st.multiselect(
+    "Protest Category",
+    df.ProtestCategory.unique(),
+    ["Demonstration/Rally", "Hunger Strike", "Strike/Boycott", "Obstruction/Blockade", "Violent Protest/Riot", "Other Political Dissent"],
 )
 
 # Show a slider widget with the years using `st.slider`.
-years = st.slider("Years", 1986, 2006, (2000, 2016))
+years = st.slider("Years", 2020, 2025, (2020, 2024))
 
 # Filter the dataframe based on the widget input and reshape it.
-df_filtered = df[(df["genre"].isin(genres)) & (df["year"].between(years[0], years[1]))]
+df_filtered = df[(df["ProtestCategory"].isin(categories)) & (df["Year"].between(years[0], years[1]))]
+df_filtered["RecordCount"] = 1
+print(df_filtered.head())
 df_reshaped = df_filtered.pivot_table(
-    index="year", columns="genre", values="gross", aggfunc="sum", fill_value=0
+    index="Year", columns="ProtestCategory", values="RecordCount", aggfunc="count", fill_value=0
 )
-df_reshaped = df_reshaped.sort_values(by="year", ascending=False)
+df_reshaped = df_reshaped.sort_values(by="Year", ascending=False)
 
 
 # Display the data as a table using `st.dataframe`.
 st.dataframe(
     df_reshaped,
     use_container_width=True,
-    column_config={"year": st.column_config.TextColumn("Year")},
+    column_config={"Year": st.column_config.TextColumn("Year")},
 )
 
 # Display the data as an Altair chart using `st.altair_chart`.
 df_chart = pd.melt(
-    df_reshaped.reset_index(), id_vars="year", var_name="genre", value_name="gross"
+    df_reshaped.reset_index(), id_vars="Year", var_name="category", value_name="protests"
 )
 chart = (
     alt.Chart(df_chart)
     .mark_line()
     .encode(
-        x=alt.X("year:N", title="Year"),
-        y=alt.Y("gross:Q", title="Gross earnings ($)"),
-        color="genre:N",
+        x=alt.X("Year:N", title="Year"),
+        y=alt.Y("protests:Q", title="Number of Protests"),
+        color="category:N",
     )
     .properties(height=320)
 )
