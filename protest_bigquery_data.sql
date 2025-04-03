@@ -44,6 +44,6 @@ WHERE
   IsRootEvent = 1 --double check unique lat/lon count without filtering as root
   AND EventRootCode = '14'
   AND ActionGeo_CountryCode = 'US'
-  AND Year IN (2024, 2025)
+  AND Year IN (2020, 2021, 2022, 2023, 2024, 2025)
   AND NumArticles > 1
   AND AvgTone < -5
