@@ -31,7 +31,6 @@ st.markdown(
 # the app reruns (e.g. if the user interacts with the widgets).
 @st.cache_data
 def load_data():
-
     columns = [
         'Year',
         'SQLDATE',
@@ -44,24 +43,21 @@ def load_data():
         'HeadlineSegment'
     ]
 
-    df = pd.read_csv("data/protest_events_gdelt_bq.csv",
-                     usecols=columns,
-                     dtype={
-                         'Year': 'int16',
-                         'SQLDATE': 'int32',
-                         'ActionGeo_Lat': 'float32',
-                         'ActionGeo_Long': 'float32',
-                         'ActionGeo_FullName': 'category',
-                         'ProtestCategory': 'category',
-                         'NumMentions': 'int16',
-                         'NumArticles': 'int16',
-                         'HeadlineSegment': 'string'
-                     })
+    df = pd.read_parquet(
+        "data/protest_events_gdelt_bq.parquet",
+        columns=columns
+    )
+
+    df['ActionGeo_FullName'] = df['ActionGeo_FullName'].astype('category')
+    df['ProtestCategory'] = df['ProtestCategory'].astype('category')
+    df['HeadlineSegment'] = df['HeadlineSegment'].astype('string')
+
     return df
 
 
 df = load_data()
-#  print(df.columns)
+# print(df.columns)
+# print(df.info())
 
 # Show a multiselect widget with the genres using `st.multiselect`.
 categories = st.multiselect(
