@@ -108,7 +108,7 @@ chart = (
         y=alt.Y("protests:Q", title="Number of Protests"),
         color="category:N",
     )
-    .properties(height=420)
+    .properties(height=520)
 )
 
 st.altair_chart(chart, use_container_width=True)
@@ -142,8 +142,8 @@ with st.spinner('Loading map... This may take a few moments.'):
         get_position=["ActionGeo_Long", "ActionGeo_Lat"],
         get_weight="NumArticles",
         aggregation='SUM',
-        opacity=0.5,
-        radiusPixels=25,  # size of the heatmap radius
+        opacity=0.3,
+        radiusPixels=40,  # size of the heatmap radius
         intensity=2,  # intensity of the heatmap, brighter areas
         threshold=0.05  # threshold for the heatmap, hides faint areas
 
@@ -154,15 +154,15 @@ with st.spinner('Loading map... This may take a few moments.'):
         data=df_filtered,
         id="scatter-layer",
         get_position=["ActionGeo_Long", "ActionGeo_Lat"],
-        get_radius=700,
+        get_radius=2000,  # size of the scatterplot radius
         pickable=True,
         auto_highlight=True,
-        opacity=0.6,  # Increased opacity
+        opacity=0.3,
         stroked=True,
         filled=True,
-        radius_scale=2,
+        radius_scale=1,  # radius multiplier
         get_fill_color=[255, 0, 0, 180],
-        get_line_color=[255, 0, 0, 200]
+        get_line_color=[0, 0, 0, 150]
     )
 
     chart_event = st.pydeck_chart(
