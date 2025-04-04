@@ -160,7 +160,7 @@ with st.spinner('Loading map... This may take a few moments.'):
         opacity=0.6,  # Increased opacity
         stroked=True,
         filled=True,
-        radius_scale=1,
+        radius_scale=2,
         get_fill_color=[255, 0, 0, 180],
         get_line_color=[255, 0, 0, 200]
     )
