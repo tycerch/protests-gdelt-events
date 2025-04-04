@@ -11,8 +11,8 @@ st.markdown(
     # About This App
     
     This app visualizes protest and political dissent events across the
-    United States using the GDELT Events dataset from
-    Google BigQuery Public Datasets.
+    United States using the [GDELT Events](https://www.gdeltproject.org/) 
+    dataset from Google BigQuery Public Datasets.
 
     ### Dataset Details:
     - Events are filtered for the United States
