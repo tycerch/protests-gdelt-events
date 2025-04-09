@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "usa-civil-unrest-analysis"
+version = "0.1.0"
+description = "A streamlit app showing protest data from GDEVENT pulled from Bigquery public dataset."
+authors = ["Chris Tycer <chris@tycer.dev>"]
+readme = "README.md"
+license = "Apache-2.0"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+streamlit = "*"
+pydeck = "*"
+pandas = "*"
+altair = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
