@@ -1,0 +1,4 @@
+- migrate to fly.io
+- change link on portfolio
+- delete streamlit community cloud
+- block webcrawlers
