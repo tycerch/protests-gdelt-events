@@ -5,6 +5,7 @@ description = "A streamlit app showing protest data from GDEVENT pulled from Big
 authors = ["Chris Tycer <chris@tycer.dev>"]
 readme = "README.md"
 license = "Apache-2.0"
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.11"
